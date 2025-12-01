@@ -1,4 +1,4 @@
-module src/github.com/aklinkert/service-composer
+module github.com/aklinkert/service-composer
 
 go 1.25.4
 
