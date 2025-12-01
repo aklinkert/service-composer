@@ -1,0 +1,38 @@
+on:
+  workflow_call:
+    inputs: {}
+
+name: Test
+
+jobs:
+  test:
+    name: "Test (go)"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Go
+        uses: actions/setup-go@v5
+        with:
+          check-latest: true
+          cache: true
+
+      - name: test
+        run: go test ./...
+
+  lint:
+    name: "Lint (go)"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Go
+        uses: actions/setup-go@v5
+        with:
+          check-latest: true
+          cache: true
+
+      - name: lint
+        uses: golangci/golangci-lint-action@v8
