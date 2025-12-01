@@ -1,0 +1,53 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    ":automergeRequireAllStatusChecks",
+    ":automergeStableNonMajor",
+    ":combinePatchMinorReleases",
+    ":gitSignOff",
+    ":ignoreUnstable",
+    ":label(dependencies)",
+    ":rebaseStalePrs",
+    ":automergeMinor",
+    "schedule:monthly",
+    "schedule:automergeWeekdays"
+  ],
+  "major": {
+    "enabled": true
+  },
+  "separateMajorMinor": true,
+  "prHourlyLimit": 5,
+  "packageRules": [
+    {
+      "matchUpdateTypes": [
+        "minor",
+        "patch",
+        "pin",
+        "digest"
+      ],
+      "automerge": true
+    },
+    {
+      "groupName": "CICD",
+      "groupSlug": "cicd",
+      "matchManagers": [
+        "github-actions"
+      ]
+    },
+    {
+      "groupName": "ASDF",
+      "groupSlug": "asdf",
+      "matchManagers": [
+        "asdf"
+      ]
+    },
+    {
+      "groupName": "Go",
+      "groupSlug": "go",
+      "matchManagers": [
+        "gomod"
+      ]
+    }
+  ]
+}

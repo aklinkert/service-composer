@@ -1,0 +1,54 @@
+version: "2"
+linters:
+  enable:
+    - bodyclose
+    - copyloopvar
+    - err113
+    - errname
+    - errorlint
+    - gochecknoglobals
+    - gochecknoinits
+    - gocyclo
+    - gosec
+    - misspell
+    - nestif
+    - nlreturn
+    - nolintlint
+    - prealloc
+    - revive
+    - rowserrcheck
+    - sqlclosecheck
+    - unconvert
+    - unparam
+    - wastedassign
+    - whitespace
+    - wsl_v5
+  exclusions:
+    generated: lax
+    presets:
+      - comments
+      - common-false-positives
+      - legacy
+      - std-error-handling
+  settings:
+    wsl_v5:
+      allow-first-in-block: true
+      allow-whole-block: false
+      branch-max-lines: 2
+formatters:
+  enable:
+    - gci
+    - goimports
+  settings:
+    gci:
+      sections:
+        - Standard
+        - Default
+        - Prefix(src/github.com/aklinkert/go-service-composer)
+  exclusions:
+    generated: lax
+    paths:
+      - temp
+      - third_party$
+      - builtin$
+      - examples$
