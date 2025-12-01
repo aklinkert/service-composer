@@ -5,7 +5,7 @@ import (
 
 	"github.com/samber/do/v2"
 
-	"src/github.com/aklinkert/go-service-composer/module"
+	"src/github.com/aklinkert/service-composer/module"
 )
 
 type (

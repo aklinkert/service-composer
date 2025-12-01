@@ -1,17 +1,17 @@
-# go-service-composer
+# service-composer
 
 A lightweight helper library for composing modular services in Go applications using dependency injection.
 
 ## Overview
 
-`go-service-composer` provides a simple way to structure and compose services in Go applications by leveraging the [
+`service-composer` provides a simple way to structure and compose services in Go applications by leveraging the [
 `do`](https://github.com/samber/do) dependency injection container. It helps you organize your application into
 manageable modules with clear lifecycle management.
 
 ## Installation
 
 ```shell
-go get github.com/aklinkert/go-service-composer
+go get github.com/aklinkert/service-composer
 ```
 
 ## Features
@@ -23,7 +23,7 @@ go get github.com/aklinkert/go-service-composer
 
 ## Usage
 
-Documentation and examples can be found in the [GoDoc](https://pkg.go.dev/github.com/aklinkert/go-service-composer).
+Documentation and examples can be found in the [GoDoc](https://pkg.go.dev/github.com/aklinkert/service-composer).
 For a complete usage example, see [`example_test.go`](./example_test.go#L68).
 
 ## License

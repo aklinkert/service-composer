@@ -44,7 +44,7 @@ formatters:
       sections:
         - Standard
         - Default
-        - Prefix(src/github.com/aklinkert/go-service-composer)
+        - Prefix(src/github.com/aklinkert/service-composer)
   exclusions:
     generated: lax
     paths:

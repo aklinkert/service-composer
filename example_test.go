@@ -9,7 +9,7 @@ import (
 
 	"github.com/samber/do/v2"
 
-	servicecomposer "src/github.com/aklinkert/go-service-composer"
+	servicecomposer "src/github.com/aklinkert/service-composer"
 )
 
 type ServiceConfig struct {
