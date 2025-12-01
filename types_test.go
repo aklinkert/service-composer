@@ -6,7 +6,7 @@ import (
 
 	"github.com/samber/do/v2"
 
-	"src/github.com/aklinkert/service-composer/module"
+	"github.com/aklinkert/service-composer/module"
 )
 
 var (
