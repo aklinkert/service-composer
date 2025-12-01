@@ -1,0 +1,49 @@
+version: 3
+
+tasks:
+  vendors:
+    desc: Install go modules
+    run: once
+    cmds:
+      - cmd: go mod download
+      - cmd: go mod tidy
+
+  vendors-update:
+    desc: Update go modules
+    run: once
+    cmds:
+      - cmd: go get -u ./...
+      - cmd: go mod tidy
+
+  test:
+    desc: Run linter and go tests
+    cmds:
+      - task: lint
+      - task: test-go
+
+  test-go:
+    desc: Run go tests
+    cmds:
+      - cmd: go test ./... -race -shuffle=on
+
+  lint:
+    desc: Run linter
+    cmds:
+      - cmd: golangci-lint run --timeout=10m
+
+  lint-fix:
+    desc: Run linter and fix issues
+    cmds:
+      - cmd: golangci-lint run --timeout=10m --fix
+
+  generate:
+    desc: Generate code
+    run: once
+    cmds:
+      - task: generate-go
+
+  generate-go:
+    desc: Generate go code
+    run: once
+    cmds:
+      - cmd: go generate ./...
