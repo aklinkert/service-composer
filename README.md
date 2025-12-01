@@ -23,7 +23,8 @@ go get github.com/aklinkert/go-service-composer
 
 ## Usage
 
-For a complete usage example, see [`example_test.go`](./example_test.go).
+Documentation and examples can be found in the [GoDoc](https://pkg.go.dev/github.com/aklinkert/go-service-composer).
+For a complete usage example, see [`example_test.go`](./example_test.go#L68).
 
 ## License
 
