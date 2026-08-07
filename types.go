@@ -14,6 +14,14 @@ type (
 		module.Registry
 
 		Injector() do.Injector
+
+		// Initialize runs every registered module's RegisterServices, then
+		// every module's InitializeFromModules, each pass ordered so a
+		// module's DependsOn() dependencies run before it does (see
+		// module.Module.DependsOn). It returns a dependency-cycle error
+		// instead of running modules in an arbitrary order if the graph
+		// can't be sorted. All modules must be registered before calling
+		// Initialize; Start rejects any registered afterwards.
 		Initialize() error
 		Start() error
 	}
