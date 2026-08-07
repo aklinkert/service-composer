@@ -21,6 +21,10 @@ type composer struct {
 	logger   Logger
 
 	initialized bool
+	// orderedModules is the dependency-sorted module list computed once by
+	// Initialize; Start reuses it so the StartableModule pass sees the same
+	// deterministic order instead of re-reading GetAllModules' map order.
+	orderedModules []module.Module
 
 	// options
 	moduleInitTimeout time.Duration
@@ -57,7 +61,9 @@ func (c *composer) Initialize() error {
 		return nil
 	}
 
-	for _, mod := range c.GetAllModules() {
+	allModules := c.GetAllModules()
+
+	for _, mod := range allModules {
 		dependsOn := mod.DependsOn()
 
 		for _, dep := range dependsOn {
@@ -67,15 +73,18 @@ func (c *composer) Initialize() error {
 		}
 	}
 
-	allModules := c.GetAllModules()
+	ordered, err := topologicalSort(allModules)
+	if err != nil {
+		return fmt.Errorf("failed to determine module initialization order: %w", err)
+	}
 
-	for _, mod := range allModules {
+	for _, mod := range ordered {
 		if register := mod.RegisterServices(); register != nil {
 			register(c.injector)
 		}
 	}
 
-	for _, mod := range allModules {
+	for _, mod := range ordered {
 		initializer, ok := mod.(FromModulesInitializerModule)
 		if !ok {
 			continue
@@ -84,7 +93,7 @@ func (c *composer) Initialize() error {
 		c.logger.Debug("initializing module", slog.String("module", mod.Name()))
 
 		moduleInitCtx, cancel := context.WithTimeout(c.Context, c.moduleInitTimeout)
-		err := initializer.InitializeFromModules(moduleInitCtx, c.injector, allModules)
+		err := initializer.InitializeFromModules(moduleInitCtx, c.injector, ordered)
 
 		cancel()
 
@@ -93,6 +102,7 @@ func (c *composer) Initialize() error {
 		}
 	}
 
+	c.orderedModules = ordered
 	c.initialized = true
 
 	return nil
@@ -103,7 +113,17 @@ func (c *composer) Start() error {
 		return err
 	}
 
-	for _, mod := range c.GetAllModules() {
+	// Start reuses the order Initialize computed rather than re-reading
+	// GetAllModules(), so every module it starts is one that was actually
+	// registered/initialized. Modules added to the registry after
+	// Initialize() ran are not part of that snapshot and would otherwise be
+	// silently skipped here; reject that instead of starting a service with
+	// a module missing.
+	if len(c.orderedModules) != len(c.GetAllModules()) {
+		return fmt.Errorf("%w: modules were registered after Initialize() ran; register all modules before calling Start", ErrModuleNotFound)
+	}
+
+	for _, mod := range c.orderedModules {
 		starter, ok := mod.(StartableModule)
 		if !ok {
 			continue

@@ -77,9 +77,9 @@ func (r *simpleRegistry) GetModule(name string) Module {
 }
 
 func (r *simpleRegistry) GetAllModules() []Module {
-	modules := make([]Module, 0)
-
 	r.modulesLock.RLock()
+
+	modules := make([]Module, 0, len(r.modules))
 
 	for _, module := range r.modules {
 		modules = append(modules, module)
