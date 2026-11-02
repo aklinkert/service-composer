@@ -1,39 +1,43 @@
 package servicecomposer
 
 import (
+	"log/slog"
 	"testing"
 	"time"
 )
 
-func Test_moduleInitTimeoutOption_apply(t *testing.T) {
+func TestWithModuleInitTimeout(t *testing.T) {
 	tests := []struct {
 		name        string
-		timeout     time.Duration
+		options     []Option
 		wantTimeout time.Duration
 	}{
 		{
+			name:        "should default without option",
+			options:     nil,
+			wantTimeout: DefaultModuleInitTimeout,
+		},
+		{
 			name:        "should set timeout",
-			timeout:     5 * time.Second,
+			options:     []Option{WithModuleInitTimeout(5 * time.Second)},
 			wantTimeout: 5 * time.Second,
 		},
 		{
 			name:        "should set zero timeout",
-			timeout:     0,
+			options:     []Option{WithModuleInitTimeout(0)},
 			wantTimeout: 0,
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			opt := &moduleInitTimeoutOption{
-				timeout: tt.timeout,
+			c, ok := New(t.Context(), slog.Default(), "test", tt.options...).(*composer)
+			if !ok {
+				t.Fatal("New() did not return a *composer")
 			}
-			eco := &composer{}
 
-			opt.apply(eco)
-
-			if eco.moduleInitTimeout != tt.wantTimeout {
-				t.Errorf("moduleInitTimeoutOption.apply() = %v, want %v", eco.moduleInitTimeout, tt.wantTimeout)
+			if c.moduleInitTimeout != tt.wantTimeout {
+				t.Errorf("moduleInitTimeout = %v, want %v", c.moduleInitTimeout, tt.wantTimeout)
 			}
 		})
 	}
