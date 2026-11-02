@@ -43,32 +43,29 @@ func (r *simpleRegistry) MustAddModule(module Module) {
 }
 
 func (r *simpleRegistry) AddModule(module Module) error {
-	if r.HasModule(module.Name()) {
-		return fmt.Errorf("%w: %s", ErrModuleAlreadyRegistered, module.Name())
-	}
+	name := module.Name()
 
 	r.modulesLock.Lock()
-	r.modules[module.Name()] = module
-	r.modulesLock.Unlock()
+	defer r.modulesLock.Unlock()
+
+	if _, ok := r.modules[name]; ok {
+		return fmt.Errorf("%w: %s", ErrModuleAlreadyRegistered, name)
+	}
+
+	r.modules[name] = module
 
 	return nil
 }
 
 func (r *simpleRegistry) HasModule(name string) bool {
-	for _, module := range r.modules {
-		if module.Name() == name {
-			return true
-		}
-	}
+	r.modulesLock.RLock()
+	_, ok := r.modules[name]
+	r.modulesLock.RUnlock()
 
-	return false
+	return ok
 }
 
 func (r *simpleRegistry) GetModule(name string) Module {
-	if !r.HasModule(name) {
-		return nil
-	}
-
 	r.modulesLock.RLock()
 	module := r.modules[name]
 	r.modulesLock.RUnlock()
