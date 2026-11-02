@@ -9,6 +9,12 @@ import (
 )
 
 type (
+	// Composer wires modules into a do injector and runs their lifecycle.
+	//
+	// Concurrency: the embedded module.Registry is safe for concurrent use,
+	// so modules may be registered from several goroutines. The lifecycle
+	// methods Initialize and Start are not synchronized and must be called
+	// from a single goroutine, after all modules have been registered.
 	Composer interface {
 		context.Context
 		module.Registry

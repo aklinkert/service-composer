@@ -17,7 +17,7 @@ manageable modules with clear lifecycle management.
 go get github.com/aklinkert/service-composer
 ```
 
-Requires Go 1.26 or newer.
+Requires Go 1.25 or newer.
 
 ## Features
 
@@ -31,6 +31,10 @@ Requires Go 1.26 or newer.
 ## Usage
 
 Documentation and examples can be found in the [GoDoc](https://pkg.go.dev/github.com/aklinkert/service-composer).
+
+Modules may be registered concurrently, but the lifecycle methods (`Initialize` and `Start`) are not synchronized and
+must be called from a single goroutine once all modules are registered.
+
 For a complete usage example, see [`example_test.go`](./example_test.go#L68).
 
 ## License
