@@ -1,4 +1,4 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["local>aklinkert/renovate-config", ":gitSignOff", "group:allNonMajor"]
+  "extends": ["local>aklinkert/renovate-config", ":gitSignOff"]
 }
