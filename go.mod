@@ -1,9 +1,9 @@
 module github.com/aklinkert/service-composer
 
-go 1.25.4
+go 1.26.0
 
 require (
-	github.com/samber/do/v2 v2.0.0
+	github.com/samber/do/v2 v2.1.0
 	github.com/stretchr/testify v1.11.1
 )
 
