@@ -1,6 +1,6 @@
 module github.com/aklinkert/service-composer
 
-go 1.26.0
+go 1.25.4
 
 require (
 	github.com/samber/do/v2 v2.1.0
