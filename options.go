@@ -15,7 +15,7 @@ func (m *moduleInitTimeoutOption) apply(c *composer) {
 }
 
 // WithModuleInitTimeout sets the timeout for module initialization.
-// Defaults to 10 minutes as of [DefaultModuleInitTimeout]
+// Defaults to [DefaultModuleInitTimeout] (10 seconds).
 func WithModuleInitTimeout(timeout time.Duration) Option {
 	return &moduleInitTimeoutOption{
 		timeout: timeout,
